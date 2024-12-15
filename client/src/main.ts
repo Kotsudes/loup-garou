@@ -18,7 +18,7 @@ app.use(router)
 
 const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
 
-setupDiscordSdk().then(() => {
+/*setupDiscordSdk().then(() => {
     console.log("Discord SDK is authenticated");
 
     // We can now make API calls within the scopes we requested in setupDiscordSDK()
@@ -26,7 +26,7 @@ setupDiscordSdk().then(() => {
     appendVoiceChannelName();
     appendGuildAvatar();
 });
-
+*/
 app.mount('#app')
 
 

@@ -1,5 +1,7 @@
 <template>
-    <RouterView />
+    <body class="bg-stone-800/75 bg-village/50 bg-cover antialiased dark:bg-stone-50/25">
+        <RouterView />
+    </body>
 </template>
 
 <script setup lang="ts">

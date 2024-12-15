@@ -22,6 +22,11 @@ module.exports = {
       },
     },
     extend: {
+        backgroundImage: {
+            village: "url('/village_background.png')",
+            "village/50": "url('/village_background50.png')",
+            "village/75": "url('/village_background75.png')",
+        },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
