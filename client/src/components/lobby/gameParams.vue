@@ -4,7 +4,7 @@
             <ThemeToggle />
             <RouterLink to="/">
                 <Button class="px-2" variant="outline">
-                    <Icon icon="material-symbols:door-open" width="24" height="24" />
+                    <RadixIconsHome width="24" height="24" />
                 </Button>
             </RouterLink>
         </div>
@@ -15,5 +15,5 @@ import ThemeToggle  from "@/components/themeToggle.vue"
 import GameSettings from "@/components/lobby/gameSettings.vue"
 import { Button } from "@/components/ui/button"
 import { RouterLink } from 'vue-router'
-import { Icon } from "@iconify/vue";
+import RadixIconsHome from "@/assets/icons/RadixIconsHome.vue";
 </script>
