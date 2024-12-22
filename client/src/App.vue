@@ -1,4 +1,5 @@
 <template>
+
     <body class="bg-stone-800/75 bg-village/50 bg-cover antialiased dark:bg-stone-50/25">
         <RouterView />
     </body>
@@ -6,6 +7,7 @@
 
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+
 </script>
 
 

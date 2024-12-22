@@ -12,7 +12,7 @@ export const roles = [
             "Il peut voter durant le jour pour essayer d'éliminer un loup garou"
     },
     {
-        name: "Simple Villageois variante",
+        name: "Simple Villageois conseil",
         image: "/roles/simple_villageois.png",
         description:
             "Il peut voter durant le jour pour essayer d'éliminer un loup garou. Il peut également se concerter une fois le jour dans la partie avec les autres simples villageois pour éliminer un joueur de leur choix"
