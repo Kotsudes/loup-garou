@@ -1,16 +1,10 @@
-import { Server, Socket } from 'socket.io';
+import { WebSocket } from "ws";
+import { Game } from "@/gameEngine/gameLogic";
 
-export default function registerGameEvents(io: Server, socket: Socket) {
+export default function registerGameEvents(ws: WebSocket, games: Record<string, Game>) {
     // Événement pour rejoindre une partie
-    socket.on('join_game', (data) => {
-        console.log(`${socket.id} rejoint la partie : ${data.gameId}`);
-        socket.join(data.gameId); // Rejoindre une salle
-        io.to(data.gameId).emit('player_joined', { playerId: socket.id });
-    });
-
-    // Événement pour démarrer une partie
-    socket.on('start_game', (data) => {
-        console.log(`Démarrage de la partie : ${data.gameId}`);
-        io.to(data.gameId).emit('game_started', { gameId: data.gameId });
+    ws.on("join", (data: { type: string, instance: string, id: string }) => {
+        games[data.instance].getPlayersByID(data.id)
+        console.log(`${ws} rejoint la partie en tant que  : ${data.type === "player" ? "joueur" : "spectateur"}`);
     });
 }

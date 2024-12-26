@@ -7,7 +7,7 @@
             <Card class="w-1/3 place-self-center justify-self-center">
                 <CardHeader>
                     <CardTitle>
-                        Bienvenu au village de PLACEHOLDER SERVEUR
+                        Bienvenu au village de {{ voiceChannelName }}
                     </CardTitle>
                     <CardDescription>
                         Un village où les loups se cachent
@@ -39,4 +39,28 @@ import {
 } from "@/components/ui/card"
 import { RouterLink } from 'vue-router'
 import ThemeToggle from "@/components/themeToggle.vue"
+import { auth, discordSdk } from "@/main"
+import { computedAsync } from '@vueuse/core'
+import { waitForValue } from "@/lib/utils"
+
+
+const voiceChannelName = computedAsync(
+    async () => {
+        if (!discordSdk.channelId) {
+            return 'Unknown'
+        }
+
+        await waitForValue(() => auth?.access_token)
+
+        const channel = await discordSdk.commands.getChannel({
+            channel_id: discordSdk.channelId as string,
+        });
+
+        if (channel.name != null) {
+            return channel.name
+        }
+    },
+    null
+)
+
 </script>

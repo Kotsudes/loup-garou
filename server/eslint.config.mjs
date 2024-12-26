@@ -10,6 +10,7 @@ export default tseslint.config(
     {
         rules: {
             indent: ['error', 4, { SwitchCase: 1 }],
+            quotes: ["error", "double"]
         }
     }
 );

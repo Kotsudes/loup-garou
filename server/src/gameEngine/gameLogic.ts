@@ -27,6 +27,14 @@ export class Game {
         return this.players.filter(player => player.getRole()?.getName() === role.getName());
     }
 
+    public getPlayersByID(id: string) {
+        return this.players.filter(player => player.getId() === id);
+    }
+
+    removePlayerByToken(token: string) {
+        throw new Error("Method not implemented.");
+    }
+
     public getRoles() {
         return this.roles;
     }
@@ -43,8 +51,8 @@ export class Game {
         this.players = this.players.filter(player => player.getName() !== username);
     }
 
-    public addPlayer(username: string) {
-        this.players.push(new Villager(username));
+    public addPlayer(id: string, username: string, avatar: string) {
+        this.players.push(new Villager(id, username, avatar));
     }
 
     public mostVotesPlayers() {

@@ -11,6 +11,7 @@ node_modules
 
 # Sensitive environment variables
 .env
+*.db*
 
 # Modules + built files
 node_modules
@@ -28,3 +29,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+

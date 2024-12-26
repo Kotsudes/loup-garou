@@ -1,6 +1,8 @@
 export class Villager {
 
-    private name: string;
+    private id: string;
+    private username: string;
+    private avatar: string;
     private role: Role | undefined;
     private voteCount = 0;
     protected team: ETeams | undefined;
@@ -10,8 +12,10 @@ export class Villager {
     private isMayor = false;
     private hasPlayed = false;
 
-    constructor(pseudo: string) {
-        this.name = pseudo;
+    constructor(id: string, username: string, avatar: string) {
+        this.id = id;
+        this.username = username;
+        this.avatar = avatar;
     }
 
     public die(): void {
@@ -22,8 +26,12 @@ export class Villager {
         return this.role;
     }
 
+    public getId() {
+        return this.id;
+    }
+
     public getName() {
-        return this.name;
+        return this.username;
     }
 
     public setRole(role: Role) {

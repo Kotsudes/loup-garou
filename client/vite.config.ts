@@ -13,7 +13,7 @@ export default defineConfig({
     vueDevTools(),
     Icons({ compiler: 'vue3' }),
   ],
-  envDir: '../.env',
+  envDir: "../",
   server:{
     port: 3000,
     proxy: {
