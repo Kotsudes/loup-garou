@@ -1,9 +1,9 @@
-import Database from 'better-sqlite3';
+import Database from "better-sqlite3";
 
-const db = new Database('src/database/user.db', { verbose: console.log });
+const db = new Database("src/database/user.db", { verbose: console.log });
 
 // Activer le mode WAL
-db.pragma('journal_mode = WAL');
+db.pragma("journal_mode = WAL");
 
 const initializeDatabase = () => {
     // Création des tables

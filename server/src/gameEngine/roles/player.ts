@@ -1,6 +1,8 @@
+import { WebSocket } from "ws";
 export class Villager {
 
     private id: string;
+    public webSocket: WebSocket | undefined;
     private username: string;
     private avatar: string;
     private role: Role | undefined;

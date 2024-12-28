@@ -16,7 +16,7 @@
                     </ResizablePanel>
                     <ResizableHandle class="border-2" />
                     <ResizablePanel :defaultSize="90">
-                        <div class="flex h-full p-6">
+                        <div class="flex h-full p-6 bg-primary-foreground/65">
                             <GameState />
                         </div>
                     </ResizablePanel>

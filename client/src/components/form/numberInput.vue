@@ -7,7 +7,7 @@
         <Input
             class="w-6 border-0 bg-transparent p-0 text-center text-gray-800 focus:ring-0 dark:text-white [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
             type="number" :style="{ appearance: 'textfield' }" aria-roledescription="Number field" :min="0"
-            :model-value="nombreRole" readOnly data-hs-input-number-input="" />
+            :value="nombreRole" default-value="0" readonly data-hs-input-number-input="" />
         <Button type="button" class="h-2 px-1 text-2xl" aria-label="Increase" @click="handleChange(nombreRole + 1)">
             <RadixIconsPlus width="24" height="24" />
         </Button>

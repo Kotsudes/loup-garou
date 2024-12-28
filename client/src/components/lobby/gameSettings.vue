@@ -11,20 +11,22 @@
                 </AlertDialogDescription>
             </AlertDialogHeader>
             <div class="flex flex-wrap gap-2">
-                <RoleSelector v-for="(role, index) in roles" :role="role" :key="role.name"
-                    :modelValue="gameRoles[index]" />
+                <Card v-for="role in savedGame.roles" :role="role" :key="role.role.name"
+                    class="flex flex-col items-center p-2">
+                    <RoleCard :role="role.role" :quantity="role.quantity" />
+                    <NumberInput v-model="role.quantity" />
+                </Card>
             </div>
             <AlertDialogFooter>
                 <AlertDialogCancel>Annuler</AlertDialogCancel>
-                <AlertDialogAction>Sauvegarder</AlertDialogAction>
+                <AlertDialogAction :disabled="!hasChanged" @click="sendUpdate">Sauvegarder</AlertDialogAction>
             </AlertDialogFooter>
         </AlertDialogContent>
     </AlertDialog>
+
 </template>
 
-<script setup lang="ts">
-import RoleSelector from "@/components/roles/roleSelector.vue"
-import { roles } from "@/components/roles/roles"
+<script lang="ts" setup>
 
 import {
     AlertDialog,
@@ -38,12 +40,51 @@ import {
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { ref, watch } from "vue";
+import RoleCard from "@/components/roles/roleCard.vue"
+import NumberInput from "@/components/form/numberInput.vue"
+import { Card } from "@/components/ui/card"
+import { computed, reactive } from "vue";
+import { useGameStore, type Game } from "@/stores/game"
+import { cloneDeep, assign, isMatch } from "lodash"
+import { useUserStore } from "@/stores/user";
+import { discordSdk } from "@/main";
 
-const gameRoles = ref<[]>([])
+const { game } = useGameStore()
+const { isConnected } = useUserStore()
 
-watch(gameRoles, (newVal) => {
-    console.log(newVal)
-}, { deep: true })
+
+const savedGame = reactive<Game>(cloneDeep(game))
+
+const hasChanged = computed(() => !isMatch(savedGame, game))
+
+async function updateGame() {
+    if (!isConnected) {
+        return;
+    }
+
+    assign(savedGame, game);
+    assign(game, cloneDeep(savedGame));
+}
+
+const sendUpdate = async () => {
+    if (!hasChanged.value) {
+        return;
+    }
+
+    // Envoie de la mise à jour au serveur par requete api
+    const response = await fetch(`/.proxy/api/game/${discordSdk.instanceId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(game),
+    });
+
+    if (response.ok) {
+        await updateGame();
+    }
+};
+
+
 
 </script>

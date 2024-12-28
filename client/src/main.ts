@@ -1,30 +1,31 @@
-import './assets/index.css'
+// CSS
+import '@/assets/index.css'
 
+// Vue
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
+// Discord
 import { DiscordSDK } from "@discord/embedded-app-sdk";
 
-
+// WebSocket + Discord SDK
 export let auth: { access_token: string; user?: { username: string; discriminator: string; id: string; public_flags: number; avatar?: string | null | undefined; global_name?: string | null | undefined }; scopes?: ("bot" | "rpc" | "identify" | "connections" | "email" | "guilds" | "guilds.join" | "guilds.members.read" | "gdm.join" | "messages.read" | "rpc.notifications.read" | "rpc.voice.write" | "rpc.voice.read" | "rpc.activities.write" | "webhook.incoming" | "applications.commands" | "applications.builds.upload" | "applications.builds.read" | "applications.store.update" | "applications.entitlements" | "relationships.read" | "activities.read" | "activities.write" | "dm_channels.read" | -1 | "guilds.channels.read" | "rpc.video.read" | "rpc.video.write" | "rpc.screenshare.read" | "rpc.screenshare.write" | "applications.commands.permissions.update" | "applications.commands.update" | "relationships.write" | "voice" | "role_connections.write" | "presences.read" | "presences.write" | "openid" | "dm_channels.messages.read" | "dm_channels.messages.write" | "gateway.connect" | "account.global_name.update" | "payment_sources.country_code" | "sdk.social_layer")[]; expires?: string; application?: { id: string; description: string; name: string; icon?: string | null | undefined; rpc_origins?: string[] | undefined } } | null;
 export const socket : WebSocket = new WebSocket("/.proxy/api");
+export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
 
+
+// App + Store
 const app = createApp(App)
-
 app.use(createPinia())
 app.use(router)
 
-export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
 
-setupDiscordSdk().then(() => {
-    // We can now make API calls within the scopes we requested in setupDiscordSDK()
-    // Note: the access_token returned is a sensitive secret and should be treated as such
-    appendGuildAvatar();
-});
+// Discord SDK setup
+setupDiscordSdk()
 
-
+// App setup
 app.mount('#app')
 
 
@@ -67,35 +68,5 @@ async function setupDiscordSdk() {
 
     if (auth == null) {
         throw new Error("Authenticate command failed");
-    }
-}
-
-async function appendGuildAvatar() {
-    const app = document.querySelector('#app');
-
-    // 1. From the HTTP API fetch a list of all of the user's guilds
-    const guilds = await fetch(`https://discord.com/api/v10/users/@me/guilds`, {
-        headers: {
-            // NOTE: we're using the access_token provided by the "authenticate" command
-            Authorization: `Bearer ${auth?.access_token}`,
-            'Content-Type': 'application/json',
-        },
-    }).then((response) => response.json());
-
-    // 2. Find the current guild's info, including it's "icon"
-    const currentGuild = guilds.find((g) => g.id === discordSdk.guildId);
-
-    // 3. Append to the UI an img tag with the related information
-    if (currentGuild != null) {
-        const guildImg = document.createElement('img');
-        guildImg.setAttribute(
-            'src',
-            // More info on image formatting here: https://discord.com/developers/docs/reference#image-formatting
-            `https://cdn.discordapp.com/icons/${currentGuild.id}/${currentGuild.icon}.webp?size=128`
-        );
-        guildImg.setAttribute('width', '128px');
-        guildImg.setAttribute('height', '128px');
-        guildImg.setAttribute('style', 'border-radius: 50%;');
-        app?.appendChild(guildImg);
     }
 }

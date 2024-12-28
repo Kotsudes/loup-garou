@@ -2,12 +2,14 @@ import { ETeams, Role, Villager } from "@/gameEngine/roles/player";
 import { DogWolf } from "@/gameEngine/roles/dogWolf";
 import { setTimeout } from "timers/promises";
 import { WAITING_TIME } from "@/libs/const";
+import { WebSocket } from "ws";
 
 export class Game {
 
     public id: string;
     private players: Villager[] = [];
-    private roles: Role[] = [];
+    public spectators: WebSocket[] = [];
+    private roles: {quantity: number,role: Role}[] = [];
     private isDay = true;
     private isFirstNight = true;
 
@@ -38,6 +40,10 @@ export class Game {
     public getRoles() {
         return this.roles;
     }
+    
+    public setRoles(roles: {quantity: number,role: Role}[]) {
+        this.roles = roles;
+    }
 
     public getIsDay() {
         return this.isDay;
@@ -51,8 +57,8 @@ export class Game {
         this.players = this.players.filter(player => player.getName() !== username);
     }
 
-    public addPlayer(id: string, username: string, avatar: string) {
-        this.players.push(new Villager(id, username, avatar));
+    public addPlayer(player: Villager) {
+        this.players.push(player);
     }
 
     public mostVotesPlayers() {
