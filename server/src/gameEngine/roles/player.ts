@@ -13,6 +13,7 @@ export class Villager {
     private partener: Villager | undefined;
     private isMayor = false;
     private hasPlayed = false;
+    private isReady = false;
 
     constructor(id: string, username: string, avatar: string) {
         this.id = id;
@@ -34,6 +35,14 @@ export class Villager {
 
     public getName() {
         return this.username;
+    }
+
+    public getReady() {
+        return this.isReady
+    }
+    
+    public setReady(ready: boolean) {
+        this.isReady = ready;
     }
 
     public setRole(role: Role) {

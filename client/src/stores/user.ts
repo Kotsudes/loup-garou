@@ -1,8 +1,9 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { socket } from '@/main'
+import { status } from '@/main'
 
 export const useUserStore = defineStore('user', () => {
-    const isConnected = computed(() => socket.readyState === WebSocket.OPEN)
+    const isConnected = computed(() => status.value === "OPEN")
+    const username = ref("");
   return { isConnected }
 })

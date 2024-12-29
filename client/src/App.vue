@@ -7,14 +7,6 @@
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-// import { useGameStore } from "@/stores/game";
-// import { useConnectionStore } from "@/stores/connection";
-
-//const gameStore = useGameStore();
-//const connectionStore = useConnectionStore();
-
-
-//connectionStore.identify();
 </script>
 
 

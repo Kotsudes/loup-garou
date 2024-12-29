@@ -36,11 +36,11 @@ wss.on("connection", (ws: WebSocket) => {
 
     ws.on("message", async(data: string) => {
          
-        const message : {type: string, data: { type: string, instance: string, access_token: string }} = JSON.parse(data);
+        const message : {type: string, data: unknown} = JSON.parse(data);
 
-        switch(message.data.type){
+        switch(message.type){
             case "join":
-                join(ws,message.data)
+                join(ws,message.data as { type: string, instance: string, access_token: string })
                 break;
         }
     });

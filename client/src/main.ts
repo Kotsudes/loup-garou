@@ -11,8 +11,8 @@ import router from './router'
 import { DiscordSDK } from "@discord/embedded-app-sdk";
 
 // WebSocket + Discord SDK
+import { useWebSocket } from '@vueuse/core'
 export let auth: { access_token: string; user?: { username: string; discriminator: string; id: string; public_flags: number; avatar?: string | null | undefined; global_name?: string | null | undefined }; scopes?: ("bot" | "rpc" | "identify" | "connections" | "email" | "guilds" | "guilds.join" | "guilds.members.read" | "gdm.join" | "messages.read" | "rpc.notifications.read" | "rpc.voice.write" | "rpc.voice.read" | "rpc.activities.write" | "webhook.incoming" | "applications.commands" | "applications.builds.upload" | "applications.builds.read" | "applications.store.update" | "applications.entitlements" | "relationships.read" | "activities.read" | "activities.write" | "dm_channels.read" | -1 | "guilds.channels.read" | "rpc.video.read" | "rpc.video.write" | "rpc.screenshare.read" | "rpc.screenshare.write" | "applications.commands.permissions.update" | "applications.commands.update" | "relationships.write" | "voice" | "role_connections.write" | "presences.read" | "presences.write" | "openid" | "dm_channels.messages.read" | "dm_channels.messages.write" | "gateway.connect" | "account.global_name.update" | "payment_sources.country_code" | "sdk.social_layer")[]; expires?: string; application?: { id: string; description: string; name: string; icon?: string | null | undefined; rpc_origins?: string[] | undefined } } | null;
-export const socket : WebSocket = new WebSocket("/.proxy/api");
 export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
 
 
@@ -20,6 +20,11 @@ export const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID)
 const app = createApp(App)
 app.use(createPinia())
 app.use(router)
+
+
+export const { status, data, send, open, close, ws: socket } = useWebSocket("/.proxy/api",{
+    autoReconnect: true,
+})
 
 
 // Discord SDK setup

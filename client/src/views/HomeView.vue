@@ -15,11 +15,12 @@
                 </CardHeader>
                 <CardContent>LES PERSONNES DEJA DANS LE LOBBY</CardContent>
                 <CardFooter class="flex justify-around">
-                    <RouterLink to="/lobby?role=player">
-                        <Button>Rejoindre</Button>
+                    <RouterLink :to="isActivityReady ? '/lobby?role=player' : '#'">
+                        <Button :disabled="!isActivityReady" @click="join('player')">Rejoindre</Button>
                     </RouterLink>
-                    <RouterLink to="/lobby?role=spectator">
-                        <Button variant="outline">Spectateur</Button>
+                    <RouterLink :to="isActivityReady ? '/lobby?role=spectator' : '#'">
+                        <Button :disabled="!isActivityReady" variant="outline"
+                            @click="join('spectator')">Spectateur</Button>
                     </RouterLink>
                 </CardFooter>
             </Card>
@@ -39,10 +40,13 @@ import {
 } from "@/components/ui/card"
 import { RouterLink } from 'vue-router'
 import ThemeToggle from "@/components/themeToggle.vue"
-import { auth, discordSdk } from "@/main"
+import { auth, socket, discordSdk, send } from "@/main"
 import { computedAsync } from '@vueuse/core'
-import { waitForValue } from "@/lib/utils"
+import { createEvent, waitForValue } from "@/lib/utils"
+import { ref } from "vue"
 
+
+const isActivityReady = ref(false)
 
 const voiceChannelName = computedAsync(
     async () => {
@@ -57,10 +61,15 @@ const voiceChannelName = computedAsync(
         });
 
         if (channel.name != null) {
+            isActivityReady.value = true
             return channel.name
         }
     },
-    null
+    "Thiercelieux"
 )
+
+async function join(type: "player" | "spectator") {
+    send(createEvent("join", { type: type, instance: discordSdk.instanceId, access_token: auth?.access_token }))
+}
 
 </script>

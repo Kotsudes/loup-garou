@@ -62,8 +62,8 @@ async function updateGame() {
         return;
     }
 
-    assign(savedGame, game);
-    assign(game, cloneDeep(savedGame));
+    assign(game, savedGame);
+    assign(savedGame, cloneDeep(game));
 }
 
 const sendUpdate = async () => {

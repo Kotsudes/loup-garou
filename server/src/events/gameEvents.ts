@@ -2,6 +2,7 @@ import { Game } from "@/gameEngine/gameLogic";
 import { games } from "@/server";
 import { Villager } from "@/gameEngine/roles/player";
 import { WebSocket } from "ws";
+import { createEvent } from "@/libs/utils"
 
 export async function join (ws: WebSocket, data: { type: string, instance: string, access_token: string }) {
     if (!data.access_token || !data.instance) {
@@ -39,6 +40,11 @@ export async function join (ws: WebSocket, data: { type: string, instance: strin
         }
 
         console.log(`${user.username} rejoint la partie en tant que : ${data.type === "player" ? "joueur" : "spectateur"}`);
+
+
+        ws.send(createEvent("lobbyInfo", games[data.instance].getPlayers().map(
+            player => ({name: player.getName(), ready: player.getReady()})
+        )));
 
            
     } catch (err) {
